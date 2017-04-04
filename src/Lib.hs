@@ -13,7 +13,6 @@ data GameBox = GameBox {
 }
 
 printCell     :: Cell -> String
-endLineFilter :: Cell -> Bool -> String
 printMap      :: GameBox -> String
 insertElem    :: Int -> a -> [a] -> [a]
 
@@ -25,10 +24,6 @@ run = putStrLn (printMap (generateMap))
 
 
 printMap gb = foldl (++) "" (insertElem (width gb) "\n" (map printCell (gameMap gb)))
-
-
-endLineFilter cell True  = (printCell cell)
-endLineFilter cell False = (printCell cell)
 
 
 printCell EMPTY   = " "

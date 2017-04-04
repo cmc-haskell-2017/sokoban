@@ -1,7 +1,7 @@
 # HowTo compile project
 
 ## Debian/Ubuntu:
-1. sudo apt install stack
+1. sudo apt install haskell-stack
 2. stack upgrade
 3. export PATH="$PATH:$HOME/.local/bin"
 4. stack setup

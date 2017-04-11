@@ -12,3 +12,14 @@ data GameBox = GameBox {
 -- | person :: Position,
 }
 
+screenWidth  :: Int
+screenWidth  = 450
+
+screenHeight :: Int
+screenHeight = 700
+
+screenLeft   :: Int
+screenLeft   = 200
+
+screenTop    :: Int
+screenTop    = 200

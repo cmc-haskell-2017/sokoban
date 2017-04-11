@@ -9,7 +9,14 @@ import Graphics.Gloss.Interface.Pure.Simulate
 
 
 run :: IO ()
-run = putStrLn (printMap (generateMap))
+-- run = putStrLn (printMap (generateMap))
+run = do
+    play display bgColor fps (generateMap) renderMap handle updateMap
+    where
+        display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
+        bgColor = white   -- цвет фона
+        fps     = 60      -- кол-во кадров в секунду
+
 
 generateMap :: GameBox
 generateMap = GameBox
@@ -19,19 +26,24 @@ generateMap = GameBox
         height  = 1
     }
 
--- leftDown  :: GameBox -> GameBox
--- leftDown  gb = gb
--- rightDown :: GameBox -> GameBox
--- rightDown gb = gb
--- leftUp    :: GameBox -> GameBox
--- leftUp    gb = gb
--- rightUp   :: GameBox -> GameBox
--- rightUp   gb = gb
+renderMap :: GameBox -> Picture
+renderMap gb = (polygon [ (0, 0), (0, -20), (30, -20), (30, 0) ])
 
+updateMap :: Float -> GameBox -> GameBox
+updateMap _ gb = gb
 
--- handle :: Event -> GameBox -> GameBox
--- handle (EventKey (SpecialKey KeyLeft) Down _ _) u   = leftDown u
--- handle (EventKey (SpecialKey KeyRight) Down _ _) u  = rightDown u
--- handle (EventKey (SpecialKey KeyLeft) Up _ _) u     = leftUp u
--- handle (EventKey (SpecialKey KeyRight) Up _ _) u    = rightUp u
--- handle _ u = u
+leftDown  :: GameBox -> GameBox
+leftDown  gb = gb
+rightDown :: GameBox -> GameBox
+rightDown gb = gb
+leftUp    :: GameBox -> GameBox
+leftUp    gb = gb
+rightUp   :: GameBox -> GameBox
+rightUp   gb = gb
+
+handle :: Event -> GameBox -> GameBox
+handle (EventKey (SpecialKey KeyLeft) Down _ _) u   = leftDown u
+handle (EventKey (SpecialKey KeyRight) Down _ _) u  = rightDown u
+handle (EventKey (SpecialKey KeyLeft) Up _ _) u     = leftUp u
+handle (EventKey (SpecialKey KeyRight) Up _ _) u    = rightUp u
+handle _ u = u

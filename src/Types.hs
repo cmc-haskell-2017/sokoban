@@ -25,3 +25,5 @@ screenLeft   = 200
 
 screenTop    :: Int
 screenTop    = 200
+
+data Movement = MoveLeft | MoveRight | MoveUp | MoveDown

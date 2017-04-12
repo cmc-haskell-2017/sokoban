@@ -24,3 +24,7 @@ parseBinary m w h = GameBox
     }
 
 getMap _ = [WALL, WALL, WALL, WALL, WALL, PERSON, BOX, WALL, WALL, WALL, WALL, WALL]
+
+-- | Public methods goes here:
+getCell :: GameBox -> Int -> Int -> Cell
+getCell gb x y = last (take ((x * width gb) + y) (gameMap gb))

@@ -12,7 +12,7 @@ import Graphics.Gloss.Interface.Pure.Simulate
 run :: IO ()
 -- run = putStrLn (printMap (generateMap))
 run = do
-    play display bgColor fps (generateMap) (render 1) handle updateMap
+    play display bgColor fps (generateMap) (render (loadImages) ) handle updateMap
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
         bgColor = white   -- цвет фона

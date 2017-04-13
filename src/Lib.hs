@@ -2,6 +2,7 @@ module Lib where
 
 import Printer(printMap)
 import Types
+import Render
 
 import Graphics.Gloss.Geometry.Line
 import Graphics.Gloss.Interface.Pure.Game
@@ -11,7 +12,7 @@ import Graphics.Gloss.Interface.Pure.Simulate
 run :: IO ()
 -- run = putStrLn (printMap (generateMap))
 run = do
-    play display bgColor fps (generateMap) renderMap handle updateMap
+    play display bgColor fps (generateMap) (render 1) handle updateMap
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
         bgColor = white   -- цвет фона
@@ -27,7 +28,7 @@ generateMap = GameBox
     }
 
 renderMap :: GameBox -> Picture
-renderMap gb = (polygon [ (0, 0), (0, -20), (30, -20), (30, 0) ])
+renderMap _ = (polygon [ (0, 0), (0, -20), (30, -20), (30, 0) ])
 
 updateMap :: Float -> GameBox -> GameBox
 updateMap _ gb = gb

@@ -4,16 +4,16 @@ import Printer(printMap)
 import Types
 import Render
 
-import Graphics.Gloss.Geometry.Line
+-- import Graphics.Gloss.Geometry.Line
 import Graphics.Gloss.Interface.Pure.Game
-import Graphics.Gloss.Interface.Pure.Simulate
+-- import Graphics.Gloss.Interface.Pure.Simulate
 
 
 run :: IO ()
 -- run = putStrLn (printMap (generateMap))
 run = do
-	images <- loadImages
-	start images
+    images <- loadImages
+    start images
 
 start :: Images -> IO()
 start imgs = do

@@ -7,19 +7,20 @@ import Graphics.Gloss.Geometry.Line
 import Graphics.Gloss.Interface.Pure.Game
 import Graphics.Gloss.Interface.Pure.Simulate
 
+scalingCoefficient = 0.6
 
 scaling :: (Picture -> Picture)
-scaling = (scale 0.5 0.5)
+scaling = (scale scalingCoefficient scalingCoefficient)
 
 loadImages :: IO Images
 loadImages = do
     Just pers <- loadJuicyPNG "img/lobos.png"
     return Images {
-        box = pers,
-        wall = pers,
+        box = scaling pers,
+        wall = scaling pers,
         person = scaling pers,
-        empty = pers,
-        mark = pers
+        empty = scaling pers,
+        mark = scaling pers
     }
 
 giveImage :: Images -> Cell -> Picture
@@ -34,3 +35,8 @@ render image _  = pictures [
     translate 150 20 (giveImage image PERSON),
     translate 130 30 (giveImage image BOX)
     ]
+
+-- функция coordinates принимает GameBox - берет из него список полей
+-- и по этому списку формирует список пар - (координатаХ, координатаУ)
+coordinates :: GameBox -> [(Int, Int)]
+coordinates _ = [(0, 0)]

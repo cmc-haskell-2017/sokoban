@@ -26,6 +26,7 @@ data Images = Images
         empty :: Picture,
         mark :: Picture
     }
+type World = IO GameBox
 
 screenWidth  :: Int
 screenWidth  = 450

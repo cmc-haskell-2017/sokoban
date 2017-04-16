@@ -12,8 +12,6 @@ data GameBox = GameBox {
 -- | person :: Position,
 }
 
-type World = IO GameBox
-
 screenWidth  :: Int
 screenWidth  = 450
 

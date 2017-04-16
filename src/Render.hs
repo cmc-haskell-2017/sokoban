@@ -3,24 +3,29 @@ module Render where
 import Types
 
 import Graphics.Gloss.Juicy
-import Graphics.Gloss.Geometry.Line
+-- import Graphics.Gloss.Geometry.Line
 import Graphics.Gloss.Interface.Pure.Game
-import Graphics.Gloss.Interface.Pure.Simulate
+-- import Graphics.Gloss.Interface.Pure.Simulate
 
-scalingCoefficient = 0.6
+scalingCoefficient :: Float
+scalingCoefficient = 0.8
 
 scaling :: (Picture -> Picture)
 scaling = (scale scalingCoefficient scalingCoefficient)
 
 loadImages :: IO Images
 loadImages = do
-    Just pers <- loadJuicyPNG "img/lobos.png"
+    Just personImage <- loadJuicyPNG "img/lobos.png"
+    Just boxImage <- loadJuicyPNG "img/box.png"
+    Just wallImage <- loadJuicyPNG "img/wall.png"
+    Just markImage <- loadJuicyPNG "img/mark.png"
+    Just emptyImage <- loadJuicyPNG "img/floor.png"
     return Images {
-        box = scaling pers,
-        wall = scaling pers,
-        person = scaling pers,
-        empty = scaling pers,
-        mark = scaling pers
+        box = scaling boxImage ,
+        wall = scaling wallImage ,
+        person = scaling personImage ,
+        empty = scaling emptyImage ,
+        mark = scaling markImage 
     }
 
 giveImage :: Images -> Cell -> Picture
@@ -32,8 +37,8 @@ giveImage images EMPTY  = (mark images)
 
 render :: Images -> GameBox -> Picture
 render image _  = pictures [
-    translate 150 20 (giveImage image PERSON),
-    translate 130 30 (giveImage image BOX)
+    translate 0 0 (giveImage image PERSON),
+    translate (128*scalingCoefficient) 0 (giveImage image BOX)
     ]
 
 -- функция coordinates принимает GameBox - берет из него список полей

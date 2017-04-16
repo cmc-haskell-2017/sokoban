@@ -1,6 +1,6 @@
 module Lib where
 
-import Printer(printMap)
+-- import Printer(printMap)
 import Types
 import Render
 

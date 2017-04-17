@@ -7,7 +7,7 @@ import Graphics.Gloss.Juicy
 import Graphics.Gloss.Interface.Pure.Game
 -- import Graphics.Gloss.Interface.Pure.Simulate
 
-scalingCoefficient = 0.4
+scalingCoefficient = 0.5
 
 scaling :: (Picture -> Picture)
 scaling = (scale scalingCoefficient scalingCoefficient)
@@ -36,7 +36,7 @@ giveImage images GOAL   = (mark images)
 giveImage images EMPTY  = (empty images)
 
 render :: Images -> GameBox -> Picture
-render set gb = pictures (listPictures set (gameMap gb) (listCoordinates (width gb) (height gb)))
+render set gb = centerPicture (width gb) (height gb) (pictures (listPictures set (gameMap gb) (listCoordinates (width gb) (height gb))))
 
 -- функция listCoordinates принимает в себя 2 параметра: ширину и высоту игрового поля
 -- обратно она возвращает список координатных пар, которые идут по порядку
@@ -60,9 +60,16 @@ listPictures set cells ((x, y) : rest) = [(translate xx yy (giveImage set (giveC
 
 picSize = 128
 
+centerPicture :: Int -> Int -> Picture -> Picture
+centerPicture x y pic = translate xx yy pic
+    where
+        xx = - scalingCoefficient * picSize * (fromIntegral x) / 2
+        yy = - scalingCoefficient * picSize * (fromIntegral y) / 2
+
 
 giveCell :: [Cell] -> Int -> Int -> Cell
 giveCell _ 1 1 = EMPTY
+giveCell _ 1 _ = EMPTY
 giveCell _ 2 0 = PERSON
 giveCell _ 4 1 = BOX
 giveCell _ _ _ = WALL

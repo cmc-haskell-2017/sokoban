@@ -29,7 +29,7 @@ generateMap = GameBox
     {
         gameMap = [WALL, WALL, WALL, WALL, WALL, PERSON, BOX, WALL, WALL, WALL, WALL, WALL],
         width   = 4,
-        height  = 1
+        height  = 3
     }
 
 renderMap :: GameBox -> Picture

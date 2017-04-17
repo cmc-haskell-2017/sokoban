@@ -28,7 +28,7 @@ data Images = Images
     }
 
 screenWidth  :: Int
-screenWidth  = 450
+screenWidth  = 900
 
 screenHeight :: Int
 screenHeight = 700

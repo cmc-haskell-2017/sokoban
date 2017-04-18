@@ -35,6 +35,9 @@ test-suite sokoban-test
   main-is:             Spec.hs
   build-depends:       base
                      , sokoban
+                     , hspec
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  other-modules:
+                       GameBoxSpec
   default-language:    Haskell2010
 

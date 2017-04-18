@@ -1,19 +1,21 @@
 module Lib where
 
+import Const(gameBoxBinaryFilePath)
+import Types
 import Printer(printMap)
 import GameBox(generateBox)
 import Handle(handle)
-import Types
-import Const(gameBoxBinaryFilePath)
 
-import Graphics.Gloss.Geometry.Line
 import Graphics.Gloss.Interface.Pure.Game
-import Graphics.Gloss.Interface.Pure.Simulate
+
+debugOn :: Bool
+debugOn = True
 
 run :: IO ()
 run = do
     box <- generateBox gameBoxBinaryFilePath
-    dump box
+    if debugOn then dump box else start box
+
 
 dump :: GameBox -> IO ()
 dump gb = putStrLn (printMap gb)

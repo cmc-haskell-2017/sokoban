@@ -2,7 +2,6 @@ module Handle where
 
 import Types
 import Graphics.Gloss.Interface.Pure.Game
-import Graphics.Gloss.Interface.Pure.Simulate
 
 leftDown  :: GameBox -> GameBox
 leftDown  gb = gb

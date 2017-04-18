@@ -5,33 +5,32 @@ import Types
 import Printer(printMap)
 import GameBox(generateBox)
 import Handle(handle)
+import Render(render, loadImages)
 
 import Graphics.Gloss.Interface.Pure.Game
 
 debugOn :: Bool
-debugOn = True
+debugOn = False
 
 run :: IO ()
+-- run = putStrLn (printMap (generateMap))
 run = do
     box <- generateBox gameBoxBinaryFilePath
-    if debugOn then dump box else start box
+    images <- loadImages
+    if debugOn then dump box else start box images
 
 
 dump :: GameBox -> IO ()
 dump gb = putStrLn (printMap gb)
 
 
-start :: GameBox -> IO ()
-start gb = do
-    play display bgColor fps gb renderMap handle updateMap
+start :: GameBox -> Images -> IO ()
+start gb imgs = do
+    play display bgColor fps gb (render imgs) handle updateMap
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
         bgColor = white   -- цвет фона
         fps     = 60      -- кол-во кадров в секунду
-
-
-renderMap :: GameBox -> Picture
-renderMap gb = (polygon [ (0, 0), (0, -20), (30, -20), (30, 0) ])
 
 updateMap :: Float -> GameBox -> GameBox
 updateMap _ gb = gb

@@ -1,5 +1,7 @@
 module Types where
 
+import Graphics.Gloss.Interface.Pure.Game
+
 type MapSize  = Int
 type Position = (Int,Int)
 
@@ -12,8 +14,19 @@ data GameBox = GameBox {
 -- | person :: Position,
 }
 
+-- Types and data for rendering
+
+data Images = Images
+    {
+        box :: Picture,
+        person :: Picture,
+        wall :: Picture,
+        empty :: Picture,
+        mark :: Picture
+    }
+
 screenWidth  :: Int
-screenWidth  = 450
+screenWidth  = 900
 
 screenHeight :: Int
 screenHeight = 700

@@ -22,7 +22,7 @@ parseBinary m w h = return GameBox {
     }
 
 -- getMap _ = [WALL, WALL, WALL, WALL, WALL, PERSON, BOX, WALL, WALL, WALL, WALL, WALL]
-getMap _ = [WALL, WALL, WALL, BOX, BOX, BOX, WALL, WALL, WALL]
+getMap _ = [WALL, WALL, WALL, BOX, PERSON, BOX, WALL, WALL, WALL]
 
 -- | Public methods goes here:
 getCell :: GameBox -> Int -> Int -> Cell

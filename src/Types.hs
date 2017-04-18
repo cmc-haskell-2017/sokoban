@@ -12,8 +12,6 @@ data GameBox = GameBox {
 -- | person :: Position,
 }
 
-type World = IO GameBox
-
 screenWidth  :: Int
 screenWidth  = 450
 
@@ -27,3 +25,22 @@ screenTop    :: Int
 screenTop    = 200
 
 data Movement = MoveLeft | MoveRight | MoveUp | MoveDown
+
+instance Show Cell where
+    show WALL      = "WALL"
+    show EMPTY     = "EMPTY"
+    show BOX       = "BOX"
+    show GOAL      = "GOAL"
+    show PERSON    = "PERSON"
+
+instance Eq Cell where
+    (==) EMPTY EMPTY   = True
+    (==) WALL WALL     = True
+    (==) BOX BOX       = True
+    (==) GOAL GOAL     = True
+    (==) PERSON PERSON = True
+    (==) EMPTY _       = False
+    (==) WALL _        = False
+    (==) BOX _         = False
+    (==) GOAL _        = False
+    (==) PERSON _      = False

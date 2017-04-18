@@ -19,17 +19,15 @@ run = do
     images <- loadImages
     if debugOn then dump box else start box images
 
-
 dump :: GameBox -> IO ()
 dump gb = putStrLn (printMap gb)
-
 
 start :: GameBox -> Images -> IO ()
 start gb imgs = do
     play display bgColor fps gb (render imgs) handle updateMap
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
-        bgColor = white   -- цвет фона
+        bgColor = blue   -- цвет фона
         fps     = 60      -- кол-во кадров в секунду
 
 updateMap :: Float -> GameBox -> GameBox

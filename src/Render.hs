@@ -34,8 +34,12 @@ giveImage images PERSON = (person images)
 giveImage images GOAL   = (mark images)
 giveImage images EMPTY  = (empty images)
 
-render :: Images -> GameBox -> Picture
-render set gb = centerPicture (width gb) (height gb) (pictures (listPictures set gb (listCoordinates (width gb) (height gb))))
+--заглушка
+renderInterface :: Images -> Interface -> Picture
+renderInterface imgs _ = giveImage imgs BOX 
+
+renderGameBox :: Images -> GameBox -> Picture
+renderGameBox set gb = centerPicture (width gb) (height gb) (pictures (listPictures set gb (listCoordinates (width gb) (height gb))))
 
 -- функция listCoordinates принимает в себя 2 параметра: ширину и высоту игрового поля
 -- обратно она возвращает список координатных пар, которые идут по порядку

@@ -2,17 +2,18 @@ module Handle where
 
 import Types
 import Graphics.Gloss.Interface.Pure.Game
+import Window
 
-leftDown  :: GameBox -> GameBox
+leftDown  :: Window -> Window
 leftDown  gb = gb
-rightDown :: GameBox -> GameBox
+rightDown :: Window -> Window
 rightDown gb = gb
-leftUp    :: GameBox -> GameBox
+leftUp    :: Window -> Window
 leftUp    gb = gb
-rightUp   :: GameBox -> GameBox
+rightUp   :: Window -> Window 
 rightUp   gb = gb
 
-handle :: Event -> GameBox -> GameBox
+handle :: Event -> Window -> Window
 handle (EventKey (SpecialKey KeyLeft) Down _ _) u   = leftDown u
 handle (EventKey (SpecialKey KeyRight) Down _ _) u  = rightDown u
 handle (EventKey (SpecialKey KeyLeft) Up _ _) u     = leftUp u

@@ -57,3 +57,6 @@ instance Eq Cell where
     (==) BOX _         = False
     (==) GOAL _        = False
     (==) PERSON _      = False
+
+-- здесь мог бы быть ваш интерфейс с пользователем
+type Interface = Int

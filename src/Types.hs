@@ -60,3 +60,5 @@ instance Eq Cell where
 
 -- здесь мог бы быть ваш интерфейс с пользователем
 type Interface = Int
+
+data Motion = LEFT | RIGHT | UP | DOWN | MENU

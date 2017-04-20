@@ -29,3 +29,7 @@ getCell :: GameBox -> Int -> Int -> Cell
 getCell gb x y
     | x < (width gb) && x >= 0 && y < (height gb) && (y >= 0) = last (take (((height gb) - y - 1) * (width gb) + x + 1) (gameMap gb))
     | otherwise = WALL
+
+motionManager :: Motion -> GameBox -> GameBox
+motionManager _ gb = gb
+

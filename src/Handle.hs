@@ -4,18 +4,20 @@ import Types
 import Graphics.Gloss.Interface.Pure.Game
 import Window
 
-leftDown  :: Window -> Window
-leftDown  gb = gb
-rightDown :: Window -> Window
-rightDown gb = gb
-leftUp    :: Window -> Window
-leftUp    gb = gb
-rightUp   :: Window -> Window 
-rightUp   gb = gb
 
 handle :: Event -> Window -> Window
-handle (EventKey (SpecialKey KeyLeft) Down _ _) u   = leftDown u
-handle (EventKey (SpecialKey KeyRight) Down _ _) u  = rightDown u
-handle (EventKey (SpecialKey KeyLeft) Up _ _) u     = leftUp u
-handle (EventKey (SpecialKey KeyRight) Up _ _) u    = rightUp u
-handle _ u = u
+handle (EventKey (SpecialKey KeyLeft) Down _ _) window   = motionManager LEFT window
+handle (EventKey (SpecialKey KeyRight) Down _ _) window  = motionManager RIGHT window
+handle (EventKey (SpecialKey KeyUp) Down _ _) window     = motionManager UP window
+handle (EventKey (SpecialKey KeyDown) Down _ _) window   = motionManager DOWN window
+handle (EventKey (Char 'h')  Down _ _) window   = motionManager LEFT window
+handle (EventKey (Char 'H') Down _ _) window   = motionManager LEFT window
+handle (EventKey (Char 'j') Down _ _) window   = motionManager DOWN window
+handle (EventKey (Char 'J') Down _ _) window   = motionManager DOWN window
+handle (EventKey (Char 'k') Down _ _) window   = motionManager UP window
+handle (EventKey (Char 'K') Down _ _) window   = motionManager UP window
+handle (EventKey (Char 'l') Down _ _) window   = motionManager RIGHT window
+handle (EventKey (Char 'L') Down _ _) window   = motionManager RIGHT window
+handle (EventKey (Char 'm') Down _ _) window   = motionManager MENU window
+handle (EventKey (Char 'M') Down _ _) window   = motionManager MENU window
+handle _ window = window

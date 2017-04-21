@@ -6,7 +6,9 @@ import GameBox(getCell)
 import Graphics.Gloss.Juicy
 import Graphics.Gloss.Interface.Pure.Game
 
-scalingCoefficient = 0.5
+scalingCoefficient = 0.6
+picHeight = 128.0
+picWidth = 114.0
 
 scaling :: (Picture -> Picture)
 scaling = (scale scalingCoefficient scalingCoefficient)
@@ -15,8 +17,8 @@ scaling = (scale scalingCoefficient scalingCoefficient)
 loadImages :: IO Images
 loadImages = do
     Just personImage <- loadJuicyPNG "img/lobos.png"
-    Just boxImage <- loadJuicyPNG "img/box.png"
-    Just wallImage <- loadJuicyPNG "img/cubeSepia.png"
+    Just boxImage <- loadJuicyPNG "img/rightSizeBoxBlue.png"
+    Just wallImage <- loadJuicyPNG "img/rightSizeBox.png"
     Just markImage <- loadJuicyPNG "img/mark.png"
     Just emptyImage <- loadJuicyPNG "img/cubeHueviy.png"
     return Images {
@@ -52,18 +54,18 @@ listCoordinates x y = foldl (++) [] listoflists
 
 listPictures :: Images -> GameBox -> [(Int, Int)] -> [Picture]
 listPictures _ _ [] = []
-listPictures set gb ((x, y) : rest) = [(translate xxx yyy (giveImage set (getCell gb x y)))] ++ (listPictures set gb rest)
+listPictures set gb ((x, y) : rest) =  [firstpick] ++ (listPictures set gb rest)
     where
-        scaller = picSize * scalingCoefficient
-        xx = scaller * (fromIntegral x) / 2
-        yy = scaller * (fromIntegral y) / 2
-        xxx = xx - 5 * yy / 6
-        yyy = xx / 2 + yy / 2
-
-picSize = 128
+        firstpick = (translate xxx yyy (giveImage set (getCell gb x y)))
+        scaller = picHeight * scalingCoefficient
+        xyscale = picWidth / picHeight
+        xx = scaller * (fromIntegral x)
+        yy = scaller * (fromIntegral y)
+        xxx = xyscale * (xx / 2 - yy / 2)
+        yyy = (xx  + yy) / 4
 
 centerPicture :: Int -> Int -> Picture -> Picture
 centerPicture x y pic = translate xx yy pic
     where
-        xx = - scalingCoefficient * picSize * (fromIntegral x) / 2
-        yy = - scalingCoefficient * picSize * (fromIntegral y) / 2
+        xx = - scalingCoefficient * picWidth * (fromIntegral x) / 8
+        yy = - scalingCoefficient * picHeight * (fromIntegral y) / 4

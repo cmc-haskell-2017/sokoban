@@ -5,7 +5,7 @@ import Types
 import Printer(printMap)
 import GameBox(generateBox)
 import Handle(handle)
-import Render(render, loadImages)
+import Render
 
 import Graphics.Gloss.Interface.Pure.Game
 
@@ -24,6 +24,7 @@ dump gb = putStrLn (printMap gb)
 
 start :: GameBox -> Images -> IO ()
 start gb imgs = do
+    -- print (coorPictures gb (listCoordinates 3 3))
     play display bgColor fps gb (render imgs) handle updateMap
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)

@@ -2,7 +2,7 @@ module GameBox where
 
 import Types
 
-generateBox :: String -> IO GameBox
+generateBox :: PathToFile -> IO GameBox
 parseBinary :: String -> MapSize -> MapSize -> IO GameBox
 getMap      :: String -> GameMap
 
@@ -21,8 +21,15 @@ parseBinary m w h = return GameBox {
         height  = h
     }
 
--- getMap _ = [WALL, WALL, WALL, WALL, WALL, PERSON, BOX, WALL, WALL, WALL, WALL, WALL]
-getMap _ = [WALL, WALL, WALL, BOX, PERSON, BOX, WALL, WALL, WALL]
+convertBinToCell :: Char -> Cell
+convertBinToCell ' ' = EMPTY
+convertBinToCell '#' = WALL
+convertBinToCell '@' = BOX
+convertBinToCell 'X' = GOAL
+convertBinToCell '&' = PERSON
+convertBinToCell _   = WALL
+
+getMap str = map convertBinToCell str
 
 -- | Public methods goes here:
 getCell :: GameBox -> Int -> Int -> Cell
@@ -32,4 +39,5 @@ getCell gb x y
 
 motionManager :: Motion -> GameBox -> GameBox
 motionManager _ gb = gb
+
 

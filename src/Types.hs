@@ -2,6 +2,8 @@ module Types where
 
 import Graphics.Gloss.Interface.Pure.Game
 
+type PathToFile = String
+
 type MapSize  = Int
 type Position = (Int,Int)
 

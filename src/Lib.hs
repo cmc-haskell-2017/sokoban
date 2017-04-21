@@ -1,28 +1,34 @@
 module Lib where
 
-import Printer(printMap)
-import GameBox(generateBox)
-import Handle(handle)
+import Const(windowBinaryFilePath)
 import Types
+import Printer(printBox)
+import Handle(handle)
+import Render(renderGameBox, loadImages)
+import Window
 
-import Graphics.Gloss.Geometry.Line
 import Graphics.Gloss.Interface.Pure.Game
-import Graphics.Gloss.Interface.Pure.Simulate
 
-gameBoxBinaryFilePath :: String
-gameBoxBinaryFilePath = "map.bin"
+debugOn :: Bool
+debugOn = False
 
 run :: IO ()
+-- run = putStrLn (printMap (generateMap))
 run = do
-    play display bgColor fps (generateBox gameBoxBinaryFilePath) renderMap handle updateMap
+    window <- generateWindow windowBinaryFilePath
+    images <- loadImages
+    if debugOn then dump window else start window images
+
+dump :: Window -> IO ()
+dump gw = putStrLn (printBox (game gw))
+
+start :: Window -> Images -> IO ()
+start gw imgs = do
+    play display bgColor fps gw (renderWindow imgs) handle updateMap
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
-        bgColor = white   -- цвет фона
+        bgColor = blue   -- цвет фона
         fps     = 60      -- кол-во кадров в секунду
 
-
-renderMap :: World -> Picture
-renderMap gb = (polygon [ (0, 0), (0, -20), (30, -20), (30, 0) ])
-
-updateMap :: Float -> World -> World
+updateMap :: Float -> Window -> Window 
 updateMap _ gb = gb

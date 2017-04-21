@@ -15,9 +15,10 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   ghc-options:         -Wall -fno-warn-type-defaults
-  exposed-modules:     Lib, Printer, Types, GameBox, Handle
+  exposed-modules:     Lib, Printer, Types, GameBox, Handle, Const, Render, Window, Interface
   build-depends:       base >= 4.7 && < 5
                      , gloss >= 1
+                     , gloss-juicy
   default-language:    Haskell2010
 
 executable sokoban
@@ -35,6 +36,9 @@ test-suite sokoban-test
   main-is:             Spec.hs
   build-depends:       base
                      , sokoban
+                     , hspec
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  other-modules:
+                       GameBoxSpec
   default-language:    Haskell2010
 

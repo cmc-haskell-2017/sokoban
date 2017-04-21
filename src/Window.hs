@@ -7,14 +7,14 @@ import Interface
 
 import Graphics.Gloss.Interface.Pure.Game
 
-generateWindow :: String -> IO Window
+generateWindow :: PathToFile -> IO Window
 generateWindow path = do 
    gameBox <- generateBox path
    return Window {
-   tag = GAME,
-   game = gameBox
---ui = 7
-}
+        tag = GAME,
+        game = gameBox
+        --ui = 7
+    }
 
 renderWindow :: Images -> Window -> Picture
 renderWindow images window

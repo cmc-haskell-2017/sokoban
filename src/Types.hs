@@ -71,7 +71,7 @@ instance Eq WindowTag where
     (==) _ _                    = False
 
 data Window = Window {
-    tag :: WindowTag,
+    tag  :: WindowTag,
     game :: GameBox,
-    ui :: Interface
+    ui   :: Interface
 }

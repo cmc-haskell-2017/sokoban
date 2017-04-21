@@ -32,4 +32,4 @@ spec = do
 
             describe "getCell" $ do
                 it "DOWN LEFT"  $ do
-                     (getCell (getTestGameBox) 0 0)  `shouldBe` WALL
+                    (getCell (getTestGameBox) 0 0) `shouldBe` WALL

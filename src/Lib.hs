@@ -13,7 +13,6 @@ debugOn :: Bool
 debugOn = False
 
 run :: IO ()
--- run = putStrLn (printMap (generateMap))
 run = do
     window <- generateWindow windowBinaryFilePath
     images <- loadImages

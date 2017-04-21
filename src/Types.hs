@@ -62,3 +62,16 @@ instance Eq Cell where
 type Interface = Int
 
 data Motion = LEFT | RIGHT | UP | DOWN | MENU
+
+data WindowTag = GAME | INTERFACE
+
+instance Eq WindowTag where
+    (==) GAME GAME              = True
+    (==) INTERFACE INTERFACE    = True
+    (==) _ _                    = False
+
+data Window = Window {
+    tag :: WindowTag,
+    game :: GameBox,
+    ui :: Interface
+}

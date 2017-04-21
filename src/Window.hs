@@ -7,19 +7,6 @@ import Interface
 
 import Graphics.Gloss.Interface.Pure.Game
 
-data WindowTag = GAME | INTERFACE
-
-instance Eq WindowTag where
-    (==) GAME GAME              = True
-    (==) INTERFACE INTERFACE    = True
-    (==) _ _                    = False
-
-data Window = Window {
-    tag :: WindowTag,
-    game :: GameBox,
-    ui :: Interface
-}
-
 generateWindow :: String -> IO Window
 generateWindow path = do 
    gameBox <- generateBox path

@@ -11,7 +11,7 @@ generateWindow :: String -> IO Window
 generateWindow path = do 
    gameBox <- generateBox path
    return Window {
-   tag = INTERFACE,
+   tag = GAME,
    game = gameBox
 --ui = 7
 }

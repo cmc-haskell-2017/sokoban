@@ -8,7 +8,7 @@ import Graphics.Gloss.Interface.Pure.Game
 
 scalingCoefficient = 0.6
 picHeight = 128.0
-picWidth = 114.0
+picWidth = 111.0
 
 scaling :: (Picture -> Picture)
 scaling = (scale scalingCoefficient scalingCoefficient)
@@ -16,11 +16,11 @@ scaling = (scale scalingCoefficient scalingCoefficient)
 
 loadImages :: IO Images
 loadImages = do
-    Just personImage <- loadJuicyPNG "img/lobos.png"
-    Just boxImage <- loadJuicyPNG "img/rightSizeBoxBlue.png"
-    Just wallImage <- loadJuicyPNG "img/rightSizeBox.png"
-    Just markImage <- loadJuicyPNG "img/mark.png"
-    Just emptyImage <- loadJuicyPNG "img/mark.png"
+    Just personImage <- loadJuicyPNG "img/BoxRed.png"
+    Just boxImage <- loadJuicyPNG "img/BoxGray.png"
+    Just wallImage <- loadJuicyPNG "img/BoxWhite.png"
+    Just markImage <- loadJuicyPNG "img/BoxBlue.png"
+    Just emptyImage <- loadJuicyPNG "img/BoxGreen.png"
     return Images {
         box = scaling boxImage ,
         wall = scaling wallImage ,

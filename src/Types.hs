@@ -12,8 +12,9 @@ type GameMap = [Cell]
 data GameBox = GameBox {
     gameMap :: GameMap,
     width   :: MapSize,
-    height  :: MapSize
--- | person :: Position,
+    height  :: MapSize,
+    person  :: Position,
+    oldCell :: Cell
 }
 
 -- Types and data for rendering
@@ -39,14 +40,30 @@ screenLeft   = 200
 screenTop    :: Int
 screenTop    = 200
 
-data Movement = MoveLeft | MoveRight | MoveUp | MoveDown
-
 instance Show Cell where
     show WALL      = "WALL"
     show EMPTY     = "EMPTY"
     show BOX       = "BOX"
     show GOAL      = "GOAL"
     show PERSON    = "PERSON"
+
+instance Show Motion where
+    show LEFT   = "LEFT"
+    show RIGHT  = "RIGHT"
+    show UP     = "UP"
+    show DOWN   = "DOWN"
+    show MENU   = "MENU"
+
+instance Show GameBox where
+    show gb = "GB:{ " ++ show w ++ "x" ++ show h ++ " person=" ++ show personPos ++ " old=" ++ show old ++ " gm=" ++ showList gm " }"
+        where
+            w = width gb
+            h = width gb
+            gm = gameMap gb
+            old = oldCell gb
+            personPos = (person (gb :: GameBox))
+
+
 
 instance Eq Cell where
     (==) EMPTY EMPTY   = True
@@ -64,6 +81,7 @@ instance Eq Cell where
 type Interface = Int
 
 data Motion = LEFT | RIGHT | UP | DOWN | MENU
+
 
 data WindowTag = GAME | INTERFACE
 

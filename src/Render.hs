@@ -32,7 +32,7 @@ loadImages = do
 giveImage :: Images -> Cell -> Picture
 giveImage images BOX    = (box images)
 giveImage images WALL   = (wall images)
-giveImage images PERSON = (person images)
+giveImage images PERSON = (person (images :: Images))
 giveImage images GOAL   = (mark images)
 giveImage images EMPTY  = (empty images)
 

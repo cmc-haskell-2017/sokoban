@@ -5,6 +5,7 @@ import GameBox
 import Render(renderGameBox, renderInterface) 
 import Interface
 
+import Debug.Trace
 import Graphics.Gloss.Interface.Pure.Game
 
 generateWindow :: PathToFile -> IO Window
@@ -12,8 +13,8 @@ generateWindow path = do
    gameBox <- generateBox path
    return Window {
         tag = GAME,
-        game = gameBox
-        --ui = 7
+        game = gameBox,
+        ui = 7
     }
 
 renderWindow :: Images -> Window -> Picture
@@ -23,7 +24,7 @@ renderWindow images window
 
 motionManager :: Motion -> Window -> Window
 motionManager motion window 
-    | tag window == GAME = Window {
+    | tag window == GAME = trace ("motionManager: motion = " ++ show motion) $ Window {
         tag = tag window,
         game = GameBox.motionManager motion (game window),
         ui = ui window

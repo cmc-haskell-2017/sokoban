@@ -90,7 +90,7 @@ move fromPos toPos gb =
         height  = height gb,
         oldCell = getCell gb toPos,
         person  = toPos,
-        gameMap = concat [ (take (from - 1) gm), [left], (take (to - from - 1) (drop from gm)), [right], (drop to gm) ]
+        gameMap = newGameMap
     }
     where
         gm      = gameMap gb
@@ -99,21 +99,29 @@ move fromPos toPos gb =
         toId    = pos2index toPos gb
         from    = minimum [fromId, toId]
         to      = maximum [fromId, toId]
+        obj     = getCell gb fromPos
         left
-            | fromId > toId = PERSON
+            | fromId > toId = obj
             | otherwise = old
         right
             | fromId > toId = old
-            | otherwise = PERSON
+            | otherwise = obj
+        newGameMap = concat [ (take (from - 1) gm), [left], (take (to - from - 1) (drop from gm)), [right], (drop to gm) ]
 
 -- | Now we start logic:
 motionManager :: Motion -> GameBox -> GameBox
 motionManager motion gb
-    | (motionAvailable PERSON motion moveTo gb) == True = (move moveFrom moveTo gb)
+    | (motionAvailable PERSON motion moveTo gb) == True = 
+        if (getCell gb moveTo) == BOX then
+            (move moveFrom moveTo (move moveBoxFrom moveBoxTo gb))
+        else (move moveFrom moveTo gb)
     | otherwise = gb
     where
-        moveFrom = (person (gb :: GameBox))
-        moveTo   = (neighbour motion moveFrom)
+        moveFrom    = (person (gb :: GameBox))
+        moveTo      = (neighbour motion moveFrom)
+        moveBoxFrom = moveTo
+        moveBoxTo   = (neighbour motion moveBoxFrom)
+
 
 neighbour :: Motion -> Position -> Position
 neighbour LEFT  (x,y) = (x - 1, y)

@@ -10,10 +10,10 @@ getMap      :: String -> GameMap
 
 generateBox filename = do
     contents <- readFile filename
-    let [a, b, c]    = lines contents
-    let inputWidth   = read a :: Int
-    let inputHeight  = read b :: Int
-    let inputMap     = read c :: String
+    let fileLines   = lines contents
+    let inputWidth  = read (fileLines !! 0) :: Int
+    let inputHeight = read (fileLines !! 1) :: Int
+    let inputMap    = (concat (drop 2 fileLines))
     return $ findPersonPosition (parseBinary inputMap inputWidth inputHeight)
 
 
@@ -38,6 +38,7 @@ convertBinToCell _   = WALL
 
 
 findPersonPosition :: GameBox -> GameBox
+findPersonPosition gb | trace ("findPersonPosition: " ++ show gb) False = undefined
 findPersonPosition gb = GameBox {
     gameMap = gameMap gb,
     width   = width gb,
@@ -63,7 +64,7 @@ pos2index pos gb = (h - y - 1) * w + x + 1
         h = height gb
 
 index2pos :: Int -> GameBox -> Position
-index2pos idx gb = ((norm `mod` w), (h - 1 - norm `div` h))
+index2pos idx gb = ((norm `mod` w), (h - 1 - norm `div` w))
     where
         w = width gb
         h = height gb

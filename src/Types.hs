@@ -58,7 +58,7 @@ instance Show GameBox where
     show gb = "GB:{ " ++ show w ++ "x" ++ show h ++ " person=" ++ show personPos ++ " old=" ++ show old ++ " gm=" ++ showList gm " }"
         where
             w = width gb
-            h = width gb
+            h = height gb
             gm = gameMap gb
             old = oldCell gb
             personPos = (person (gb :: GameBox))

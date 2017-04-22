@@ -15,7 +15,7 @@ getTestGameBox = GameBox {
         WALL, WALL, WALL
     ],
     width   = 3,
-    height  = 3,
+    height  = 3
 }
 
 spec :: Spec
@@ -70,5 +70,3 @@ spec = do
             describe "index2pos" $ do
                 it "1 -> (0,2)" $ do
                     (index2pos 1 gb) `shouldBe` (0,2)
-
-

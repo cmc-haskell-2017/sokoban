@@ -14,7 +14,7 @@ generateBox filename = do
     let inputWidth   = read a :: Int
     let inputHeight  = read b :: Int
     let inputMap     = read c :: String
-    findPersonPosition (parseBinary inputMap inputWidth inputHeight)
+    return $ findPersonPosition (parseBinary inputMap inputWidth inputHeight)
 
 
 parseBinary m w h = GameBox {
@@ -37,8 +37,8 @@ convertBinToCell '&' = PERSON
 convertBinToCell _   = WALL
 
 
-findPersonPosition :: GameBox -> IO GameBox
-findPersonPosition gb = return GameBox {
+findPersonPosition :: GameBox -> GameBox
+findPersonPosition gb = GameBox {
     gameMap = (gameMap gb),
     width   = (width gb),
     height  = (height gb),
@@ -94,7 +94,7 @@ move toPos fromPos gb =
         height  = (height gb),
         oldCell = (getCell' gb toPos),
         person  = toPos,
-        gameMap = concat [ (take (from - 1) gm), [old], (take (to - from - 1) (drop from gm)), [PERSON], (drop to gm) ]
+        gameMap = concat [ (take (from - 1) gm), [left], (take (to - from - 1) (drop from gm)), [right], (drop to gm) ]
     }
     where
         gm      = gameMap gb
@@ -103,6 +103,13 @@ move toPos fromPos gb =
         toId    = pos2index toPos gb
         from    = minimum [fromId, toId]
         to      = maximum [fromId, toId]
+        left
+            | fromId > toId = PERSON
+            | otherwise = old
+        right
+            | fromId > toId = old
+            | otherwise = PERSON
+
 
 
 

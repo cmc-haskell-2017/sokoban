@@ -39,19 +39,17 @@ convertBinToCell _   = WALL
 
 findPersonPosition :: GameBox -> GameBox
 findPersonPosition gb = GameBox {
-    gameMap = (gameMap gb),
-    width   = (width gb),
-    height  = (height gb),
-    oldCell = (oldCell gb),
-    person  = (find gb PERSON)
+    gameMap = gameMap gb,
+    width   = width gb,
+    height  = height gb,
+    oldCell = oldCell gb,
+    person  = find gb PERSON
 }
 
 find :: GameBox -> Cell -> Position
 find gb cell = index2pos idx gb
     where
-        w    = (width gb)
-        h    = (height gb)
-        list = (takeWhile (/= cell) (gameMap gb))
+        list = takeWhile (/= cell) (gameMap gb)
         idx  = (length list) + 1
 
 
@@ -64,9 +62,6 @@ pos2index pos gb = (h - y - 1) * w + x + 1
         w = width gb
         h = height gb
 
-xy2index :: Int -> Int -> GameBox -> Int
-xy2index x y gb = (pos2index (x, y) gb)
-
 index2pos :: Int -> GameBox -> Position
 index2pos idx gb = ((norm `mod` w), (h - 1 - norm `div` h))
     where
@@ -76,23 +71,23 @@ index2pos idx gb = ((norm `mod` w), (h - 1 - norm `div` h))
 
 
 -- | Public methods goes here:
-getCell' :: GameBox -> Position -> Cell
-getCell' gb pos = getCell gb (fst pos) (snd pos)
-
-getCell :: GameBox -> Int -> Int -> Cell
-getCell gb x y
-    | x < (width gb) && x >= 0 && y < (height gb) && (y >= 0) = last (take (xy2index x y gb) (gameMap gb))
+getCell :: GameBox -> Position -> Cell
+getCell gb pos
+    | x < (width gb) && x >= 0 && y < (height gb) && (y >= 0) = last (take (pos2index pos gb) (gameMap gb))
     | otherwise = WALL
+        where
+            x = (fst pos)
+            y = (snd pos)
 
 
 -- | Function `move` called only if Motion is available!
 move :: Position -> Position -> GameBox -> GameBox
-move to from gb | trace ("move: from=" ++ show from ++ " to=" ++ show to ++ " gb=" ++ show gb) False = undefined
-move toPos fromPos gb = 
+move from to gb | trace ("move: from=" ++ show from ++ " to=" ++ show to ++ " gb=" ++ show gb) False = undefined
+move fromPos toPos gb = 
     GameBox {
-        width   = (width gb),
-        height  = (height gb),
-        oldCell = (getCell' gb toPos),
+        width   = width gb,
+        height  = height gb,
+        oldCell = getCell gb toPos,
         person  = toPos,
         gameMap = concat [ (take (from - 1) gm), [left], (take (to - from - 1) (drop from gm)), [right], (drop to gm) ]
     }
@@ -110,38 +105,14 @@ move toPos fromPos gb =
             | fromId > toId = old
             | otherwise = PERSON
 
-
-
-
 -- | Now we start logic:
 motionManager :: Motion -> GameBox -> GameBox
 motionManager motion gb
-    | (motionAvailable motion PERSON moveFrom moveTo gb) == True = (move moveTo moveFrom gb)
+    | (motionAvailable PERSON motion moveTo gb) == True = (move moveFrom moveTo gb)
     | otherwise = gb
     where
         moveFrom = (person (gb :: GameBox))
         moveTo   = (neighbour motion moveFrom)
-
-
-motionAvailable :: Motion -> Cell -> Position -> Position -> GameBox -> Bool
-motionAvailable motion PERSON from to gb | trace ("motionAvailable: " ++ show motion ++ " from=" ++ show from ++ " to=" ++ show to ++ " " ++ show gb) False = undefined
-motionAvailable motion PERSON from to gb 
-    | neighbourCell == EMPTY = (flag False) || True
-    | neighbourCell == GOAL  = (flag False) || True
-    | neighbourCell == WALL  = (flag False) || False
-    | neighbourCell == BOX   = (flag False) || (motionAvailable motion BOX to (neighbour motion to) gb)
-    | otherwise = (flag False) || False
-    where
-        neighbourCell = (getCell' gb to)
-        flag = trace ("motionAvailable: neighbourPos=" ++ show to ++ " neighbourCell=" ++ show neighbourCell)
-
-motionAvailable motion BOX from to gb
-    | neighbourCell == EMPTY = True
-    | neighbourCell == GOAL  = True
-    | otherwise = False
-    where
-        neighbourCell = (getCell' gb to)
-
 
 neighbour :: Motion -> Position -> Position
 neighbour LEFT  (x,y) = (x - 1, y)
@@ -149,3 +120,23 @@ neighbour RIGHT (x,y) = (x + 1, y)
 neighbour UP    (x,y) = (x, y + 1)
 neighbour DOWN  (x,y) = (x, y - 1)
 neighbour _  pos = pos
+
+-- | This function check is current direction available for this object or not?
+motionAvailable :: Cell -> Motion -> Position -> GameBox -> Bool
+motionAvailable PERSON motion to gb
+    | neighbourCell == EMPTY = True
+    | neighbourCell == GOAL  = True
+    | neighbourCell == WALL  = False
+    | neighbourCell == BOX   = (motionAvailable BOX motion (neighbour motion to) gb)
+    | otherwise = False
+    where
+        neighbourCell = getCell gb to
+
+motionAvailable BOX _ to gb
+    | neighbourCell == EMPTY = True
+    | neighbourCell == GOAL  = True
+    | otherwise = False
+    where
+        neighbourCell = getCell gb to
+
+motionAvailable _ _ _ _ = False

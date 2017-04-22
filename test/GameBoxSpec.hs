@@ -25,19 +25,19 @@ spec = do
         describe "GameBox" $ do
             describe "getCell" $ do
                 it "TOP RIGHT" $ do
-                    (getCell gb 4 4) `shouldBe` WALL
+                    (getCell gb (4,4)) `shouldBe` WALL
             describe "getCell" $ do
                 it "CENTER LEFT"  $ do
-                    (getCell gb 0 1) `shouldBe` BOX
+                    (getCell gb (0,1)) `shouldBe` BOX
             describe "getCell" $ do
                 it "CENTER CENTER"  $ do
-                    (getCell gb 1 1) `shouldBe` EMPTY
+                    (getCell gb (1,1)) `shouldBe` EMPTY
             describe "getCell" $ do
                 it "CENTER RIGHT"  $ do
-                    (getCell gb 2 1) `shouldBe` BOX
+                    (getCell gb (2,1)) `shouldBe` BOX
             describe "getCell" $ do
                 it "DOWN LEFT"  $ do
-                    (getCell gb 0 0) `shouldBe` WALL
+                    (getCell gb (0,0)) `shouldBe` WALL
 
             describe "pos2index" $ do
                 it "(2,0) -> 9" $ do

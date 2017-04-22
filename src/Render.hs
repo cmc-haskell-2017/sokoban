@@ -60,7 +60,7 @@ listPictures :: Images -> GameBox -> [(Int, Int)] -> [Picture]
 listPictures _ _ [] = []
 listPictures set gb ((x, y) : rest) =  [firstpick] ++ (listPictures set gb rest)
     where
-        firstpick = (translate xxx yyy (giveImage set (getCell gb x y)))
+        firstpick = (translate xxx yyy (giveImage set (getCell gb (x,y))))
         scaller = picHeight * scalingCoefficient
         xyscale = picWidth / picHeight
         xx = scaller * (fromIntegral x)

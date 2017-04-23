@@ -32,7 +32,7 @@ loadImages = do
 giveImage :: Images -> Cell -> Picture
 giveImage images BOX    = (box images)
 giveImage images WALL   = (wall images)
-giveImage images PERSON = (person images)
+giveImage images PERSON = (person (images :: Images))
 giveImage images GOAL   = (mark images)
 giveImage images EMPTY  = (empty images)
 
@@ -60,7 +60,7 @@ listPictures :: Images -> GameBox -> [(Int, Int)] -> [Picture]
 listPictures _ _ [] = []
 listPictures set gb ((x, y) : rest) =  [firstpick] ++ (listPictures set gb rest)
     where
-        firstpick = (translate xxx yyy (giveImage set (getCell gb x y)))
+        firstpick = (translate xxx yyy (giveImage set (getCell gb (x,y))))
         scaller = picHeight * scalingCoefficient
         xyscale = picWidth / picHeight
         xx = scaller * (fromIntegral x)

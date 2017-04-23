@@ -27,7 +27,7 @@ start gw imgs = do
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
         bgColor = blue   -- цвет фона
-        fps     = 60      -- кол-во кадров в секунду
+        fps     = 60     -- кол-во кадров в секунду
 
 updateMap :: Float -> Window -> Window 
 updateMap _ gb = gb

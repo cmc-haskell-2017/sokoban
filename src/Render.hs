@@ -6,9 +6,9 @@ import GameBox(getCell)
 import Graphics.Gloss.Juicy
 import Graphics.Gloss.Interface.Pure.Game
 
-scalingCoefficient = 0.6
-picHeight = 128.0
-picWidth = 111.0
+scalingCoefficient = 0.06
+picHeight = 2048.0
+picWidth = 1774.0
 
 scaling :: (Picture -> Picture)
 scaling = (scale scalingCoefficient scalingCoefficient)
@@ -16,11 +16,11 @@ scaling = (scale scalingCoefficient scalingCoefficient)
 
 loadImages :: IO Images
 loadImages = do
-    Just personImage <- loadJuicyPNG "img/BoxRed.png"
-    Just boxImage <- loadJuicyPNG "img/BoxGray.png"
-    Just wallImage <- loadJuicyPNG "img/BoxWhite.png"
-    Just markImage <- loadJuicyPNG "img/BoxBlue.png"
-    Just emptyImage <- loadJuicyPNG "img/BoxGreen.png"
+    Just personImage <- loadJuicyPNG "img/highcubViolet.png"
+    Just boxImage <- loadJuicyPNG "img/cubRed.png"
+    Just wallImage <- loadJuicyPNG "img/cubGray.png"
+    Just markImage <- loadJuicyPNG "img/cubBlue.png"
+    Just emptyImage <- loadJuicyPNG "img/cub2.png"
     return Images {
         box = scaling boxImage ,
         wall = scaling wallImage ,

@@ -78,9 +78,16 @@ instance Eq Cell where
     (==) PERSON _      = False
 
 -- здесь мог бы быть ваш интерфейс с пользователем
-type Interface = Int
+data Interface = Interface {
+    buttons :: [Button]
+}
+
+type Action = (Interface -> Interface)
+
+type Button = (String, Action, Selected)
 
 data Motion = LEFT | RIGHT | UP | DOWN | MENU
+data Selected = Bool
 
 
 data WindowTag = GAME | INTERFACE

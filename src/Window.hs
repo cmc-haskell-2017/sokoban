@@ -12,9 +12,11 @@ generateWindow :: PathToFile -> IO Window
 generateWindow path = do 
    gameBox <- generateBox path
    return Window {
-        tag = GAME,
+        tag = INTERFACE,
         game = gameBox,
-        ui = 7
+        ui = Interface {
+            buttons = []
+        }
     }
 
 renderWindow :: Images -> Window -> Picture

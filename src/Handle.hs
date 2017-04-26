@@ -20,4 +20,6 @@ handle (EventKey (Char 'l') Down _ _) window             = motionManager RIGHT w
 handle (EventKey (Char 'L') Down _ _) window             = motionManager RIGHT window
 handle (EventKey (Char 'm') Down _ _) window             = motionManager MENU window
 handle (EventKey (Char 'M') Down _ _) window             = motionManager MENU window
+handle (EventKey (SpecialKey KeyTab) Down _ _) window    = motionManager MENU window
+
 handle _ window = window

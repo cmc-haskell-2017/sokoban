@@ -23,6 +23,17 @@ renderWindow images window
     | tag window == INTERFACE   = renderInterface images (ui window)
 
 motionManager :: Motion -> Window -> Window
+motionManager MENU window
+    | tag window == GAME = trace ("Entering interface") $ Window {
+        tag = INTERFACE,
+        game = game window,
+        ui = ui window
+    }
+    | tag window == INTERFACE = trace ("Entering game") $ Window {
+        tag = GAME,
+        game = game window,
+        ui = ui window
+    }
 motionManager motion window 
     | tag window == GAME = trace ("motionManager: motion = " ++ show motion) $ Window {
         tag = tag window,

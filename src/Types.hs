@@ -86,8 +86,9 @@ type Action = (Interface -> Interface)
 
 type Button = (String, Action, Selected)
 
+type Selected = Bool
+
 data Motion = LEFT | RIGHT | UP | DOWN | MENU
-data Selected = Bool
 
 
 data WindowTag = GAME | INTERFACE

@@ -14,9 +14,7 @@ generateWindow path = do
    return Window {
         tag = INTERFACE,
         game = gameBox,
-        ui = Interface {
-            buttons = []
-        }
+        ui = generateInterface
     }
 
 renderWindow :: Images -> Window -> Picture

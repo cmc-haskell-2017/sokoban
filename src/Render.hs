@@ -6,8 +6,13 @@ import GameBox(getCell)
 import Graphics.Gloss.Juicy
 import Graphics.Gloss.Interface.Pure.Game
 
+scalingCoefficient :: Float
 scalingCoefficient = 0.06
+
+picHeight :: Float
 picHeight = 2048.0
+
+picWidth :: Float
 picWidth = 1774.0
 
 scaling :: (Picture -> Picture)
@@ -38,7 +43,36 @@ giveImage images EMPTY  = (empty images)
 
 --заглушка
 renderInterface :: Images -> Interface -> Picture
-renderInterface imgs _ = giveImage imgs BOX 
+renderInterface imgs menu = pictures (map (buttonImage imgs) (buttons menu))
+    where
+        listy = map (\x -> picHeight * fromIntegral x) [0..(length (buttons menu))]
+
+buttonImage :: Images -> Button -> Picture
+buttonImage images (_, _, s) 
+    | s = (box images)
+    | True = (wall images)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 renderGameBox :: Images -> GameBox -> Picture
 renderGameBox set gb = centerPicture (width gb) (height gb) (pictures (listPictures set gb (listCoordinates (width gb) (height gb))))

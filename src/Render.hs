@@ -18,6 +18,7 @@ loadImages :: IO Images
 loadImages = do
     Just personImage <- loadJuicyPNG "img/highcubViolet.png"
     Just boxImage <- loadJuicyPNG "img/cubRed.png"
+    Just goodImage <- loadJuicyPNG "img/cubGreen.png"
     Just wallImage <- loadJuicyPNG "img/cubGray.png"
     Just markImage <- loadJuicyPNG "img/cubBlue.png"
     Just emptyImage <- loadJuicyPNG "img/cub2.png"
@@ -26,12 +27,13 @@ loadImages = do
         wall = scaling wallImage ,
         person = scaling personImage ,
         empty = scaling emptyImage ,
-        mark = scaling markImage 
+        mark = scaling markImage ,
+        good = scaling goodImage
     }
 
 giveImage :: Images -> Cell -> Picture
 giveImage images BOX     = box images
-giveImage images GOODBOX = box images
+giveImage images GOODBOX = good images
 giveImage images WALL    = wall images
 giveImage images PERSON  = person images
 giveImage images GOAL    = mark images

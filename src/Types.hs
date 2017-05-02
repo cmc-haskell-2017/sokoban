@@ -22,6 +22,7 @@ data GameBox = GameBox {
 data Images = Images
     {
         box :: Picture,
+        good :: Picture,
         person :: Picture,
         wall :: Picture,
         empty :: Picture,

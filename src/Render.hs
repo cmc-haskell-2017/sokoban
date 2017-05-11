@@ -8,7 +8,7 @@ import Graphics.Gloss.Juicy
 import Graphics.Gloss.Interface.Pure.Game
 
 scalingCoefficient :: GameBox -> Float
-scalingCoefficient gb = 0.4 / fromIntegral(max (width gb) (height gb))
+scalingCoefficient gb = 0.3 / fromIntegral(max (width gb) (height gb))
 
 picHeight :: Float
 picHeight = 2048.0
@@ -81,7 +81,7 @@ listPictures set gb ((x, y) : rest) =  [firstpick] ++ (listPictures set gb rest)
 centerPicture :: GameBox -> Picture -> Picture
 centerPicture gb pic = translate xxx yyy pic
     where
-        xx = (scalingCoefficient gb) * picWidth * (fromIntegral (width gb))
-        yy = (scalingCoefficient gb) * picHeight * (fromIntegral (height gb))
-        yyy = -yy / 16
-        xxx = -xx / 32
+        x = (fromIntegral (width gb))
+        y = (fromIntegral (height gb))
+        yyy = - picHeight * (x + y - 1) * (scalingCoefficient gb) * (scalingCoefficient gb) / 2
+        xxx = - picWidth * (abs (x - y)) * (scalingCoefficient gb) * (scalingCoefficient gb) / 2

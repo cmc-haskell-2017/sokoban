@@ -6,9 +6,15 @@ import GameBox(getCell)
 import Graphics.Gloss.Juicy
 import Graphics.Gloss.Interface.Pure.Game
 
+scalingCoefficient :: Float
 scalingCoefficient = 0.06
+
+picHeight :: Float
 picHeight = 2048.0
+
+picWidth :: Float
 picWidth = 1774.0
+
 
 scaling :: (Picture -> Picture)
 scaling = (scale scalingCoefficient scalingCoefficient)

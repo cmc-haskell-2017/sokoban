@@ -21,19 +21,9 @@ renderWindow :: Images -> Window -> Picture
 renderWindow images window
     | tag window == GAME        = renderGameBox images (game window)
     | tag window == INTERFACE   = renderInterface images (ui window)
+    | otherwise                 = renderGameBox images (game window)
 
 motionManager :: Motion -> Window -> Window
-motionManager MENU window
-    | tag window == GAME = trace ("Entering interface") $ Window {
-        tag = INTERFACE,
-        game = game window,
-        ui = ui window
-    }
-    | tag window == INTERFACE = trace ("Entering game") $ Window {
-        tag = GAME,
-        game = game window,
-        ui = ui window
-    }
 motionManager motion window 
     | tag window == GAME = trace ("motionManager: motion = " ++ show motion) $ Window {
         tag = tag window,
@@ -44,5 +34,10 @@ motionManager motion window
         tag = tag window,
         game = game window,
         ui = Interface.motionManager motion (ui window)
+    }
+    | otherwise = Window {
+        tag = tag window,
+        game = GameBox.motionManager motion (game window),
+        ui = ui window
     }
 

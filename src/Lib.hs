@@ -4,7 +4,7 @@ import Const(windowBinaryFilePath)
 import Types
 import Printer(printBox)
 import Handle(handle)
-import Render(renderGameBox, loadImages)
+import Render(loadImages)
 import Window
 
 import Graphics.Gloss.Interface.Pure.Game

@@ -15,5 +15,6 @@ printBox gb = foldl (++) "" (insertElem (width gb) "\n" (map printCell (gameMap 
 printCell EMPTY   = " "
 printCell WALL    = "#"
 printCell BOX     = "@"
+printCell GOODBOX = "O"
 printCell GOAL    = "X"
 printCell PERSON  = "&"

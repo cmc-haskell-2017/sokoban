@@ -1,6 +1,7 @@
 module GameBox where
 
 import Types
+import Const
 
 import Debug.Trace
 
@@ -104,6 +105,7 @@ move fromPos toPos gb =
             | objMove == PERSON  = oldPersonCell gb
             | objMove == BOX     = EMPTY
             | objMove == GOODBOX = GOAL
+            | otherwise = EMPTY
         fromId  = pos2index fromPos gb
         toId    = pos2index toPos gb
         left
@@ -121,7 +123,7 @@ motionManager :: Motion -> GameBox -> GameBox
 motionManager motion gb
     | (motionAvailable PERSON motion moveToPos gb) == True = 
         if moveToCell == BOX || moveToCell == GOODBOX then
-            (move moveFromPos moveToPos moveBoxGB)
+            (iswinner (move moveFromPos moveToPos moveBoxGB))
         else (move moveFromPos moveToPos gb)
     | otherwise = gb
     where
@@ -131,6 +133,8 @@ motionManager motion gb
         moveBoxToPos   = neighbour motion moveBoxFromPos
         moveToCell     = getCell gb moveToPos
         moveBoxGB      = move moveBoxFromPos moveBoxToPos gb
+        winning        = (\b -> (length (filter (\x -> x == BOX) (gameMap b))) == 0)
+        iswinner         = (\x -> if (winning x) then winnerBox else x)
 
 
 neighbour :: Motion -> Position -> Position
@@ -160,4 +164,3 @@ motionAvailable object _ to gb
     where
         neighbourCell = getCell gb to
 
-motionAvailable _ _ _ _ = False

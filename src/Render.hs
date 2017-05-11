@@ -79,7 +79,9 @@ listPictures set gb ((x, y) : rest) =  [firstpick] ++ (listPictures set gb rest)
         yyy = (xx  + yy) / 4
 
 centerPicture :: GameBox -> Picture -> Picture
-centerPicture gb pic = translate xx yy pic
+centerPicture gb pic = translate xxx yyy pic
     where
-        xx = - (scalingCoefficient gb) * picWidth * (fromIntegral (width gb)) / 8
-        yy = - (scalingCoefficient gb) * picHeight * (fromIntegral (height gb)) / 4
+        xx = (scalingCoefficient gb) * picWidth * (fromIntegral (width gb))
+        yy = (scalingCoefficient gb) * picHeight * (fromIntegral (height gb))
+        yyy = -yy / 16
+        xxx = -xx / 32

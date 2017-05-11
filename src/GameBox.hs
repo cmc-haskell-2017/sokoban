@@ -118,12 +118,17 @@ move fromPos toPos gb =
         to      = maximum [fromId, toId]
         newGameMap = concat [ (take (from - 1) gm), [left], (take (to - from - 1) (drop from gm)), [right], (drop to gm) ]
 
+isWinner :: GameBox -> GameBox
+isWinner gb = if winning then winnerBox else gb
+    where
+        winning = filter (== BOX) (gameMap gb) == []
+
 -- | Now we start logic:
 motionManager :: Motion -> GameBox -> GameBox
 motionManager motion gb
     | (motionAvailable PERSON motion moveToPos gb) == True =
         if moveToCell == BOX || moveToCell == GOODBOX then
-            (iswinner (move moveFromPos moveToPos moveBoxGB))
+            (isWinner (move moveFromPos moveToPos moveBoxGB))
         else (move moveFromPos moveToPos gb)
     | otherwise = gb
     where
@@ -133,8 +138,6 @@ motionManager motion gb
         moveBoxToPos   = neighbour motion moveBoxFromPos
         moveToCell     = getCell gb moveToPos
         moveBoxGB      = move moveBoxFromPos moveBoxToPos gb
-        winning        = filter (== BOX) (gameMap gb) == []
-        iswinner       = if (winning x) then winnerBox else x
 
 
 neighbour :: Motion -> Position -> Position

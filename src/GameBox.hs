@@ -84,7 +84,7 @@ getCell gb (x,y)
 -- | Function `move` called only if Motion is available!
 move :: Position -> Position -> GameBox -> GameBox
 move from to gb | trace ("move: from=" ++ show from ++ " to=" ++ show to ++ " gb=" ++ show gb) False = undefined
-move fromPos toPos gb = 
+move fromPos toPos gb =
     GameBox {
         width         = width gb,
         height        = height gb,
@@ -121,7 +121,7 @@ move fromPos toPos gb =
 -- | Now we start logic:
 motionManager :: Motion -> GameBox -> GameBox
 motionManager motion gb
-    | (motionAvailable PERSON motion moveToPos gb) == True = 
+    | (motionAvailable PERSON motion moveToPos gb) == True =
         if moveToCell == BOX || moveToCell == GOODBOX then
             (iswinner (move moveFromPos moveToPos moveBoxGB))
         else (move moveFromPos moveToPos gb)
@@ -133,8 +133,8 @@ motionManager motion gb
         moveBoxToPos   = neighbour motion moveBoxFromPos
         moveToCell     = getCell gb moveToPos
         moveBoxGB      = move moveBoxFromPos moveBoxToPos gb
-        winning        = (\b -> (length (filter (\x -> x == BOX) (gameMap b))) == 0)
-        iswinner         = (\x -> if (winning x) then winnerBox else x)
+        winning        = filter (== BOX) (gameMap gb) == []
+        iswinner       = if (winning x) then winnerBox else x
 
 
 neighbour :: Motion -> Position -> Position

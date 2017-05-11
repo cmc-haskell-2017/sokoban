@@ -2,9 +2,6 @@ module Const where
 
 import Types
 
-gameBoxBinaryFilePath :: PathToFile
-gameBoxBinaryFilePath = "data/map.bin"
-
 windowBinaryFilePath :: PathToFile
 windowBinaryFilePath = "data/map.bin"
 

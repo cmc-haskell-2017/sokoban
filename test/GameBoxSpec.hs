@@ -15,7 +15,9 @@ getTestGameBox = GameBox {
         EMPTY, PERSON, EMPTY, EMPTY
     ],
     width   = 4,
-    height  = 3
+    height  = 3,
+    personPos = (1,0),
+    oldPersonCell = EMPTY
 }
 
 spec :: Spec
@@ -73,6 +75,7 @@ spec = do
                 it "(1,2) -> 2" $ do
                     (pos2index (1,2) gb) `shouldBe` 2
             describe "pos2index" $ do
+<<<<<<< Updated upstream
                 it "(0,2) -> 1" $ do
                     (pos2index (0,2) gb) `shouldBe` 1
 
@@ -112,3 +115,46 @@ spec = do
             describe "index2pos" $ do
                 it "1 -> (0,2)" $ do
                     (index2pos 1 gb) `shouldBe` (0,2)
+=======
+--                it "(0,2) -> 1" $ do
+--                    (pos2index (0,2) gb) `shouldBe` 1
+--
+--            describe "index2pos" $ do
+--                it "12 -> (3,0)" $ do
+--                    (index2pos 12 gb) `shouldBe` (3,0)
+--            describe "index2pos" $ do
+--                it "11 -> (2,0)" $ do
+--                    (index2pos 11 gb) `shouldBe` (2,0)
+--            describe "index2pos" $ do
+--                it "10 -> (1,0)" $ do
+--                    (index2pos 10 gb) `shouldBe` (1,0)
+--            describe "index2pos" $ do
+--                it "9 -> (0,0)" $ do
+--                    (index2pos 9 gb) `shouldBe` (0,0)
+--            describe "index2pos" $ do
+--                it "8 -> (3,1)" $ do
+--                    (index2pos 8 gb) `shouldBe` (3,1)
+--            describe "index2pos" $ do
+--                it "7 -> (2,1)" $ do
+--                    (index2pos 7 gb) `shouldBe` (2,1)
+--            describe "index2pos" $ do
+--                it "6 -> (1,1)" $ do
+--                    (index2pos 6 gb) `shouldBe` (1,1)
+--            describe "index2pos" $ do
+--                it "5 -> (0,1)" $ do
+--                    (index2pos 5 gb) `shouldBe` (0,1)
+--            describe "index2pos" $ do
+--                it "4 -> (3,2)" $ do
+--                    (index2pos 4 gb) `shouldBe` (3,2)
+--            describe "index2pos" $ do
+--                it "3 -> (2,2)" $ do
+--                    (index2pos 3 gb) `shouldBe` (2,2)
+--            describe "index2pos" $ do
+--                it "2 -> (1,2)" $ do
+--                    (index2pos 2 gb) `shouldBe` (1,2)
+--            describe "index2pos" $ do
+--                it "1 -> (0,2)" $ do
+--                    (index2pos 1 gb) `shouldBe` (0,2)
+--
+--
+>>>>>>> Stashed changes

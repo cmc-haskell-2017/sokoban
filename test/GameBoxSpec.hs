@@ -112,4 +112,3 @@ spec = do
             describe "index2pos" $ do
                 it "1 -> (0,2)" $ do
                     (index2pos 1 gb) `shouldBe` (0,2)
-

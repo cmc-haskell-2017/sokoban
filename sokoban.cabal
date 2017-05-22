@@ -39,10 +39,6 @@ test-suite sokoban-test
                      , hspec
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
   other-modules:
-<<<<<<< Updated upstream
-                       MotionSpec, GameBoxSpec
-=======
                        GameBoxSpec, MotionSpec, WinGameSpec
->>>>>>> Stashed changes
   default-language:    Haskell2010
 

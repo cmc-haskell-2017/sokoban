@@ -6,6 +6,7 @@ import Printer(printBox)
 import Handle(handle)
 import Render(renderGameBox, loadImages)
 import Window
+import Editor
 
 import Graphics.Gloss.Interface.Pure.Game
 
@@ -16,7 +17,8 @@ run :: IO ()
 run = do
     window <- generateWindow windowBinaryFilePath
     images <- loadImages
-    if debugOn then dump window else start window images
+    if True then runEditor 4 6 else start window images --LOBOS
+    --if debugOn then dump window else start window images
 
 dump :: Window -> IO ()
 dump gw = putStrLn (printBox (game gw))

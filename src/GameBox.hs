@@ -100,10 +100,12 @@ move fromPos toPos gb =
             | nextCell == GOAL && objMove == GOODBOX = GOODBOX
             | objMove == GOODBOX = BOX
             | otherwise = objMove
+
         oldCell
             | objMove == PERSON  = oldPersonCell gb
             | objMove == BOX     = EMPTY
             | objMove == GOODBOX = GOAL
+            | otherwise = EMPTY
         fromId  = pos2index fromPos gb
         toId    = pos2index toPos gb
         left

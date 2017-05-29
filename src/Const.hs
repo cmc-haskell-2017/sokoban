@@ -7,3 +7,6 @@ gameBoxBinaryFilePath = "data/myMap.bin"
 
 windowBinaryFilePath :: PathToFile
 windowBinaryFilePath = "data/myMap.bin"
+
+savedMapsBinaryFilePath :: PathToFile
+savedMapsBinaryFilePath = "data/savedMaps.bin"

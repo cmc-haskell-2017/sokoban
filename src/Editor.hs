@@ -1,9 +1,7 @@
 module Editor where
 
-import Const(windowBinaryFilePath)
 import Types
 import Printer(printBox)
-import Handle(handle)
 import Render(renderGameBox, loadImages)
 import Window
 
@@ -11,31 +9,58 @@ import GameBox
 import Interface
 import Graphics.Gloss.Interface.Pure.Game
 import Debug.Trace
+import Const
 
-runEditor :: Int -> Int -> IO ()
-runEditor h w = do 
+runEditor :: IO ()
+runEditor = do
     let userSizeGB = GameBox {
-            gameMap = fillWithEmpty h w,
-            width = w,
-            height = h,
-            personPos = (0,h-1),
+            gameMap = [EMPTY],
+            width = 1,
+            height = 1,
+            personPos = (0,1),
             oldPersonCell = EMPTY
         }
         window = Window {
             tag = GAME,
             game = userSizeGB,
-            ui = 7
+            ui = 7,
+            savedMap = []
         }
     startEditor window
 
-fillWithEmpty :: Int -> Int -> GameMap
---fillWithEmpty h w = [
---                    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
---                    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
---                    EMPTY, EMPTY, BOX, EMPTY, BOX, EMPTY,
---                    EMPTY, GOAL, BOX, EMPTY, BOX, EMPTY,
---                    ]
+changeSize :: Motion -> Window -> Window
+changeSize m gw = if gameMap gb /= fillWithEmpty h w then gw
+    else 
+        Window {
+            savedMap = savedMap gw,
+            tag = tag gw,
+            ui = ui gw,
+            game = GameBox {
+                width = newW,
+                height = newH,
+                oldPersonCell = EMPTY,
+                personPos = (0, newH-1),
+                gameMap = fillWithEmpty newH newW
+            }
+        }
+        where
+            gb = game gw
+            h = height gb
+            w = width gb
+            newW  
+                | m == LEFT =
+                    if w > 1 then w-1 else w
+                | m == RIGHT =
+                    if w < 12  then w+1 else w
+                | otherwise = w
+            newH
+                | m == UP =
+                    if h > 1 then h-1 else h
+                | m == DOWN =
+                    if h < 12 then h+1 else h
+                | otherwise = h
 
+fillWithEmpty :: Int -> Int -> GameMap
 fillWithEmpty h w = map (\x -> EMPTY) [1..h*w]
 
 startEditor :: Window -> IO ()
@@ -44,17 +69,8 @@ startEditor gw = do
     play display bgColor fps gw (renderWindow images) handleMoves updateMapEditor
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
-        bgColor = blue   -- цвет фона
-        fps     = 60     -- кол-во кадров в секунду
-
-startMoves :: Window -> IO ()
-startMoves gw = do
-    images <- loadImages
-    play display bgColor fps gw (renderWindow images) handleMoves updateMapEditor
-    where
-        display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
-        bgColor = blue   -- цвет фона
-        fps     = 60     -- кол-во кадров в секунду
+        bgColor = blue
+        fps     = 60
 
 updateMapEditor :: Float -> Window -> Window 
 updateMapEditor _ gb = gb
@@ -69,17 +85,48 @@ handleMoves (EventKey (Char 'p') Down _ _) window  = setEditor PERSON window
 handleMoves (EventKey (Char 'g') Down _ _) window  = setEditor GOAL window
 handleMoves (EventKey (Char 'b') Down _ _) window  = setEditor BOX window
 handleMoves (EventKey (Char 'e') Down _ _) window  = setEditor EMPTY window
-handleMoves (EventKey (Char 'w') Down _ _) window  = setEditor WALL window
-handleMoves (EventKey (Char 'o') Down _ _) window  = setEditor GOODBOX window
---handleMoves (EventKey (Char 'c') Down _ _) window = startEditor window 
+handleMoves (EventKey (Char 'o') Down _ _) window  = setEditor WALL window
+
+handleMoves (EventKey (Char 'a') Down _ _) window  = changeSize LEFT window
+handleMoves (EventKey (Char 'd') Down _ _) window  = changeSize RIGHT window
+handleMoves (EventKey (Char 'w') Down _ _) window  = changeSize UP window
+handleMoves (EventKey (Char 's') Down _ _) window  = changeSize DOWN window
+handleMoves (EventKey (Char 'c') Down _ _) window  = cleanMap window
+
+handleMoves (EventKey (Char 'n') Down _ _) window = saveNewMap window
+--handleMoves (EventKey (Char '1') Down _ _) window = loadMap 1 window
+
 handleMoves _ window = window
 
-handleChoose :: Event -> Window -> Window
-handleChoose _ window = window
+--loadMap :: Int -> Window -> Window
+--loadMap k gw = Window {
+--        game = savedMap gw !! k,
+--        savedMap = savedMap gw,
+--        tag = tag gw,
+--        ui = ui gw
+--    }
+    
+saveNewMap :: Window -> Window
+saveNewMap gw = Window {
+        savedMap = newGb : sM,
+        tag = tag gw,
+        ui = ui gw,
+        game = GameBox {
+            width = 1,
+            height = 1,
+            oldPersonCell = EMPTY,
+            personPos = (0,1),
+            gameMap = [EMPTY]
+        }
+    }
+    where
+        newGb = game gw
+        sM = savedMap gw
 
 setEditor :: Cell -> Window -> Window
 setEditor c gw = 
     Window {
+        savedMap = savedMap gw,
         tag = tag gw,
         ui = ui gw,
         game = GameBox {
@@ -96,34 +143,49 @@ setEditor c gw =
         w = width gb
 
 
+
+cleanMap :: Window -> Window
+cleanMap gw = Window {
+            savedMap = savedMap gw,
+            tag = tag gw,
+            ui = ui gw,
+            game = GameBox {
+                width = w,
+                height = h,
+                oldPersonCell = EMPTY,
+                personPos = (0, h-1),
+                gameMap = fillWithEmpty h w
+            }
+        }
+    where 
+        gb = game gw
+        h = height gb
+        w = width gb
+
 motionManagerEdit :: Motion -> Window -> Window
-motionManagerEdit motion window 
-    | tag window == GAME = Window {
+motionManagerEdit motion window = Window {
         tag = tag window,
         game = motionManagerGB motion (game window),
-        ui = ui window
+        ui = ui window,
+        savedMap = savedMap window
     }
 
 motionManagerGB :: Motion -> GameBox -> GameBox
 motionManagerGB motion gb
-    | (motionAvailEditor motion moveToPos gb) == True = 
+    | (motionAvailEditor moveToPos gb) == True = 
         moveEditor moveFromPos moveToPos gb
     | otherwise = gb
     where
         moveFromPos    = personPos gb
         moveToPos      = neighbour motion moveFromPos
-        moveBoxFromPos = moveToPos
-        moveBoxToPos   = neighbour motion moveBoxFromPos
-        moveToCell     = getCell gb moveToPos
-        moveBoxGB      = moveEditor moveBoxFromPos moveBoxToPos gb
 
-motionAvailEditor :: Motion -> Position -> GameBox -> Bool
-motionAvailEditor motion (w,h) gb
+motionAvailEditor :: Position -> GameBox -> Bool
+motionAvailEditor (w,h) gb
     | w >= (width gb) || h >= (height gb) || h < 0 || w < 0 = False
     | otherwise = True
 
 moveEditor :: Position -> Position -> GameBox -> GameBox
-moveEditor from to gb | trace ("MOVE oldPersonCell: " ++ show (oldPersonCell gb)) False = undefined
+moveEditor _ _ gb | trace ("MOVE oldPersonCell: " ++ show (oldPersonCell gb)) False = undefined
 moveEditor fromPos toPos gb = 
     GameBox {
         width         = width gb,
@@ -135,7 +197,6 @@ moveEditor fromPos toPos gb =
     where
         gm = gameMap gb
         objMove  = getCell gb fromPos
-        nextCell = getCell gb toPos
 
         fromId  = pos2index fromPos gb
         toId    = pos2index toPos gb

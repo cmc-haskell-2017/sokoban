@@ -55,6 +55,14 @@ instance Show Motion where
     show DOWN   = "DOWN"
     show MENU   = "MENU"
 
+instance Eq Motion where
+    (==) LEFT LEFT    = True
+    (==) RIGHT RIGHT  = True
+    (==) UP UP        = True
+    (==) DOWN DOWN    = True
+    (==) MENU MENU    = True
+    (==) _ _          = False
+
 instance Show GameBox where
     show gb = "GB:{ " ++ show w ++ "x" ++ show h ++ " person=" ++ show person ++ " old=" ++ show old ++ " gm=" ++ showList gm " }"
         where
@@ -96,5 +104,6 @@ instance Eq WindowTag where
 data Window = Window {
     tag  :: WindowTag,
     game :: GameBox,
-    ui   :: Interface
+    ui   :: Interface,
+    savedMap :: [GameBox]
 }

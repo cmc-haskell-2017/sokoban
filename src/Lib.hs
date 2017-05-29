@@ -8,6 +8,8 @@ import Render(renderGameBox, loadImages)
 import Window
 import Editor
 
+import Numeric
+
 import Graphics.Gloss.Interface.Pure.Game
 
 debugOn :: Bool
@@ -17,7 +19,7 @@ run :: IO ()
 run = do
     window <- generateWindow windowBinaryFilePath
     images <- loadImages
-    if True then runEditor 4 6 else start window images --LOBOS
+    if True then runEditor else start window images --LOBOS
     --if debugOn then dump window else start window images
 
 dump :: Window -> IO ()

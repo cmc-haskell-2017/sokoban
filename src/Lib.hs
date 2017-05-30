@@ -19,7 +19,7 @@ run :: IO ()
 run = do
     window <- generateWindow windowBinaryFilePath
     images <- loadImages
-    if True then runEditor else start window images --LOBOS
+    if True then runEditor else start window images
     --if debugOn then dump window else start window images
 
 dump :: Window -> IO ()

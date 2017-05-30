@@ -12,7 +12,7 @@ insertElem i e x = (take i x) ++ [e] ++ insertElem i e (drop i x)
 printBox gb = foldl (++) "" (insertElem (width gb) "\n" (map printCell (gameMap gb)))
 
 
-printCell EMPTY   = " "
+printCell EMPTY   = "_"
 printCell WALL    = "#"
 printCell BOX     = "@"
 printCell GOAL    = "X"

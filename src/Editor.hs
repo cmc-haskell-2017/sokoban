@@ -8,6 +8,7 @@ import Window
 import GameBox
 import Interface
 import Graphics.Gloss.Interface.Pure.Game
+import Graphics.Gloss.Interface.IO.Game
 import Debug.Trace
 import Const
 
@@ -66,49 +67,43 @@ fillWithEmpty h w = map (\x -> EMPTY) [1..h*w]
 startEditor :: Window -> IO ()
 startEditor gw = do
     images <- loadImages
-    play display bgColor fps gw (renderWindow images) handleMoves updateMapEditor
+    playIO display bgColor fps gw (renderWindowIO images) handleMoves updateMapEditor
     where
         display = InWindow "Sokoban" (screenWidth, screenHeight) (screenLeft, screenTop)
         bgColor = blue
         fps     = 60
 
-updateMapEditor :: Float -> Window -> Window 
-updateMapEditor _ gb = gb
+renderWindowIO :: Images -> Window -> IO Picture
+renderWindowIO images window = pure(renderGameBox images (game window))
 
+updateMapEditor :: Float -> Window -> IO Window 
+updateMapEditor _ gb = pure(gb)
 
-handleMoves :: Event -> Window -> Window
-handleMoves (EventKey (SpecialKey KeyLeft) Down _ _) window   = motionManagerEdit LEFT window
-handleMoves (EventKey (SpecialKey KeyRight) Down _ _) window  = motionManagerEdit RIGHT window
-handleMoves (EventKey (SpecialKey KeyUp) Down _ _) window     = motionManagerEdit UP window
-handleMoves (EventKey (SpecialKey KeyDown) Down _ _) window   = motionManagerEdit DOWN window
-handleMoves (EventKey (Char 'p') Down _ _) window  = setEditor PERSON window
-handleMoves (EventKey (Char 'g') Down _ _) window  = setEditor GOAL window
-handleMoves (EventKey (Char 'b') Down _ _) window  = setEditor BOX window
-handleMoves (EventKey (Char 'e') Down _ _) window  = setEditor EMPTY window
-handleMoves (EventKey (Char 'o') Down _ _) window  = setEditor WALL window
+handleMoves :: Event -> Window -> IO Window
+handleMoves (EventKey (SpecialKey KeyLeft) Down _ _) window   = pure(motionManagerEdit LEFT window)
+handleMoves (EventKey (SpecialKey KeyRight) Down _ _) window  = pure(motionManagerEdit RIGHT window)
+handleMoves (EventKey (SpecialKey KeyUp) Down _ _) window     = pure(motionManagerEdit UP window)
+handleMoves (EventKey (SpecialKey KeyDown) Down _ _) window   = pure(motionManagerEdit DOWN window)
+handleMoves (EventKey (Char 'p') Down _ _) window  = pure(setEditor PERSON window)
+handleMoves (EventKey (Char 'g') Down _ _) window  = pure(setEditor GOAL window)
+handleMoves (EventKey (Char 'b') Down _ _) window  = pure(setEditor BOX window)
+handleMoves (EventKey (Char 'e') Down _ _) window  = pure(setEditor EMPTY window)
+handleMoves (EventKey (Char 'o') Down _ _) window  = pure(setEditor WALL window)
 
-handleMoves (EventKey (Char 'a') Down _ _) window  = changeSize LEFT window
-handleMoves (EventKey (Char 'd') Down _ _) window  = changeSize RIGHT window
-handleMoves (EventKey (Char 'w') Down _ _) window  = changeSize UP window
-handleMoves (EventKey (Char 's') Down _ _) window  = changeSize DOWN window
-handleMoves (EventKey (Char 'c') Down _ _) window  = cleanMap window
+handleMoves (EventKey (Char 'a') Down _ _) window  = pure(changeSize LEFT window)
+handleMoves (EventKey (Char 'd') Down _ _) window  = pure(changeSize RIGHT window)
+handleMoves (EventKey (Char 'w') Down _ _) window  = pure(changeSize UP window)
+handleMoves (EventKey (Char 's') Down _ _) window  = pure(changeSize DOWN window)
+handleMoves (EventKey (Char 'c') Down _ _) window  = pure(cleanMap window)
 
 handleMoves (EventKey (Char 'n') Down _ _) window = saveNewMap window
---handleMoves (EventKey (Char '1') Down _ _) window = loadMap 1 window
 
-handleMoves _ window = window
-
---loadMap :: Int -> Window -> Window
---loadMap k gw = Window {
---        game = savedMap gw !! k,
---        savedMap = savedMap gw,
---        tag = tag gw,
---        ui = ui gw
---    }
+handleMoves _ window = pure(window)
     
-saveNewMap :: Window -> Window
-saveNewMap gw = Window {
-        savedMap = newGb : sM,
+saveNewMap :: Window -> IO Window
+saveNewMap gw = do
+    writeFile savedMapsBinaryFilePath (show w ++ ['\n'] ++ show h ++ ['\n'] ++ printBox gb)
+    pure(Window {
         tag = tag gw,
         ui = ui gw,
         game = GameBox {
@@ -118,10 +113,11 @@ saveNewMap gw = Window {
             personPos = (0,1),
             gameMap = [EMPTY]
         }
-    }
+    })
     where
-        newGb = game gw
-        sM = savedMap gw
+        gb = game gw
+        w = width gb
+        h = height gb
 
 setEditor :: Cell -> Window -> Window
 setEditor c gw = 

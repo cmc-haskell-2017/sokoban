@@ -12,4 +12,13 @@ winnerBox = GameBox {
     height        = 3,
     personPos     = (1, 1),
     oldPersonCell = EMPTY
-    }
+}
+
+loserGamebox :: GameBox
+loserGamebox = GameBox {
+    gameMap       = [BOX, BOX, BOX, BOX, BOX, BOX, BOX, BOX, BOX],
+    width         = 3,
+    height        = 3,
+    personPos     = (1, 1),
+    oldPersonCell = EMPTY
+}

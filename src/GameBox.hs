@@ -71,6 +71,11 @@ index2pos idx gb = ((norm `mod` w), (h - 1 - norm `div` w))
         h = height gb
         norm = idx - 1
 
+tranverse :: GameBox -> [(Cell, Position)]
+tranverse gb = map (\ p -> ((getCell gb p), p)) [(x,y) | x <- [0 .. w], y <- [0 .. h]]
+    where
+        w  = width gb
+        h  = height gb
 
 -- | Public methods goes here:
 getCell :: GameBox -> Position -> Cell
@@ -123,12 +128,20 @@ isWinner gb = if winning then winnerBox else gb
     where
         winning = filter (== BOX) (gameMap gb) == []
 
+
+isLoser :: GameBox -> GameBox
+isLoser gb = if length deadlocks > 0 then loserGamebox else gb
+    where
+        boxes = filter (\ (cell,_) -> cell == BOX ) (tranverse gb)
+        deadlocks = filter (\ (_,pos) -> (checkDeadlock pos gb) == False) boxes
+
+
 -- | Now we start logic:
 motionManager :: Motion -> GameBox -> GameBox
 motionManager motion gb
     | (motionAvailable PERSON motion moveToPos gb) == True =
         if moveToCell == BOX || moveToCell == GOODBOX then
-            (isWinner (move moveFromPos moveToPos moveBoxGB))
+            (isWinner (isLoser (move moveFromPos moveToPos moveBoxGB)))
         else (move moveFromPos moveToPos gb)
     | otherwise = gb
     where
@@ -147,6 +160,20 @@ neighbour UP    (x,y) = (x, y + 1)
 neighbour DOWN  (x,y) = (x, y - 1)
 neighbour _  pos = pos
 
+checkMovable :: (Bool, Bool, Bool, Bool) -> Bool
+checkMovable (False , _     , False , _    ) = False
+checkMovable (_     , False , False , _    ) = False
+checkMovable (False , _     , _     , False) = False
+checkMovable (_     , False , _     , False) = False
+checkMovable _ = True
+
+
+checkDeadlock :: Position -> GameBox -> Bool
+checkDeadlock from gb  = checkMovable (available !! 0, available !! 1, available !! 2, available !! 3)
+    where
+        nextPoses = map (\ vec -> ((neighbour vec from),vec) ) [LEFT, RIGHT, UP, DOWN]
+        available = map (\ (next,vec) -> (motionAvailable BOX vec next gb) ) nextPoses
+
 -- | This function check is current direction available for this object or not?
 motionAvailable :: Cell -> Motion -> Position -> GameBox -> Bool
 motionAvailable PERSON motion to gb
@@ -162,7 +189,7 @@ motionAvailable PERSON motion to gb
 
 motionAvailable object _ to gb
     | object == BOX || object == GOODBOX =
-        if neighbourCell == EMPTY || neighbourCell == GOAL then True else False
+        if neighbourCell == EMPTY || neighbourCell == GOAL || neighbourCell == PERSON then True else False
     | otherwise = False
     where
         neighbourCell = getCell gb to
